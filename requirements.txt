@@ -1,0 +1,11 @@
+python-dotenv
+pydantic
+uvicorn
+langchain
+langchain-core
+langchain-classic
+langchain-groq
+langsmith
+langgraph
+streamlit
+pytest
