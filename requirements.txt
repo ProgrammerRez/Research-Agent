@@ -5,6 +5,7 @@ langchain
 langchain-core
 langchain-classic
 langchain-groq
+langchain-community
 langsmith
 langgraph
 streamlit
