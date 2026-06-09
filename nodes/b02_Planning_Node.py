@@ -3,6 +3,12 @@ node/b02_Planning_Node.py
 
 This node analyzes the topic and based on the research mode decides
 how and what subtopics to include for the research.
+
+**Possible Optimization**
+
+1. Token Management for Tav and Groq
+2. Hardcoded numbers for amount of subtopics
+3. Single llm instance (along with validation node)
 """
 
 from schema import ResearchState, Subtopic_Plan_Node
@@ -31,18 +37,18 @@ async def plan_node(state: ResearchState) -> ResearchState:
     # 02. Deciding Prompt based on Research Mode
     prompt = (
         DEEP_RESEARCH_PROMPT
-        if state.research_mode == "deep"
+        if state["research_mode"] == "advanced"
         else SHALLOW_RESEARCH_PROMPT
     )
 
     # 03. Building and Running Chain
     chain = ChatPromptTemplate.from_messages(prompt) | llm
 
-    result = await chain.ainvoke({"topic": state.topic})  # type: ignore
+    result = await chain.ainvoke({"topic": state["topic"]})  # type: ignore
 
     # state.subtopics = result if type(result)==List else []
-    print(result)
+    print(result.subtopic)
     print(type(result))
-    state.subtopics = result
+    state["subtopics"] = result.subtopic
     # 04. Returning State
     return state

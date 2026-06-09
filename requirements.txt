@@ -10,3 +10,4 @@ langsmith
 langgraph
 streamlit
 pytest
+httpx

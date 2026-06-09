@@ -6,21 +6,24 @@ import asyncio
 import json
 
 
+
 # Creating an async function
 
 
 async def main():
-    state = ResearchState(topic="Machine Learning Systems Design", research_mode="deep")
+    state = ResearchState(
+        **{"topic": "Machine Learning Systems Design", "research_mode": 'ultra-fast'}
+    )
 
     # Inside a function we need to await async nodes
     updated_state = await intent_node(state)
     updated_state = await plan_node(updated_state)
-    research_state = await(research_node(updated_state))
+    research_state = await research_node(updated_state)
     print(updated_state)
     print(research_state)
-    
-    with open('example.json', 'w') as f:
-        json.dump(research_state.model_dump(),fp=f)
+
+    with open("example.json", "w") as f:
+        json.dump(research_state, fp=f)
 
 
 if __name__ == "__main__":
