@@ -1,6 +1,9 @@
 from pydantic import BaseModel, Field
-from typing import Optional, Any, Literal, List
+from typing import Any, Literal, List, Dict
 
+
+class Subtopic_Plan_Node(BaseModel):
+    subtopic : List[str] 
 
 # The core state for the whole process
 class ResearchState(BaseModel):
@@ -11,10 +14,10 @@ class ResearchState(BaseModel):
     
     # Dynamic Internal Variables
     
-    subtopics: List[str] = []
-    results_collected: List[Any] = [] # Maybe include Arxiv and wikipedia but for now we're just going with tavily
+    subtopics: Any = []
+    results_collected: Dict[str, Any] = Field(default_factory=dict)  # Maybe include Arxiv and wikipedia but for now we're just going with tavily
     
     # Final Output Variables:
     
-    final_research: List[Any] = []
+    final_research: Dict[str, Any] = Field(default_factory=dict)
     summary: str = """"""
