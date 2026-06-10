@@ -1,5 +1,7 @@
 from pydantic import BaseModel
-from typing import Any, Literal, List, Dict, TypedDict, Optional
+from typing import Any, Literal, List, Dict, Optional, Tuple
+from typing_extensions import TypedDict
+from datetime import datetime
 
 
 class Subtopic_Plan_Node(BaseModel):
@@ -14,9 +16,25 @@ class ResearchState(TypedDict):
 
     # Dynamic Internal Variables
     subtopics: Any
-    results_collected: Dict[str, Any] # Maybe include Arxiv and wikipedia but for now we're just going with tavily
+    results_collected: Dict[
+        str, Any
+    ]  # Maybe include Arxiv and wikipedia but for now we're just going with tavily
 
     # Final Output Variables:
 
     final_research: Optional[str]
     summary: Optional[str]
+
+
+# The session progress object for api endpoints(/json, /file, /cost, /logs)
+class SessionCheckpoint(TypedDict):
+    
+    # Carries responses with timestamp
+    responses: Dict[str, ResearchState]
+    
+    # Logs for the current session
+    logs: List[str]
+    
+    # Token/ API Costs for the current session
+    # First: GROQ API, Second: Tavily API
+    costs: Tuple[float, float]
