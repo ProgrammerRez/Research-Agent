@@ -179,6 +179,6 @@ async def validation_node(state: ResearchState) -> ResearchState:
             )
 
         print(final_markdown_report)
-        state["summary_reference"] = final_markdown_report
+        state["final_research"] = final_markdown_report
 
     return state

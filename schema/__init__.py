@@ -23,7 +23,6 @@ class ResearchState(TypedDict):
     # Final Output Variables:
 
     final_research: Optional[str]
-    summary: Optional[str]
 
 
 # The session progress object for api endpoints(/json, /file, /cost, /logs)

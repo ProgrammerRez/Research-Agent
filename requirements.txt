@@ -11,3 +11,5 @@ langgraph
 streamlit
 pytest
 httpx
+orjson
+redis

@@ -15,18 +15,18 @@ response = session.post(
 
 # 2. Hit the download route
 file_response = session.get(
-    url='http://127.0.0.1:8000/json'
+    url='http://127.0.0.1:8000/logs'
 )
 
 if file_response.ok:
     # Extract the filename sent by FastAPI from the headers if you want it exactly
     # Or just hardcode a download path here
-    output_filename = "downloaded_session_data.json"
+    output_filename = "downloaded_session_data.txt"
     
     # 3. Read the payload binary content and write it out onto your hard drive
     with open(output_filename, "wb") as f:
         f.write(file_response.content)
         
-    print(f"Success! Saved the session file locally as: {output_filename}")
+    print(f"Success! Saved the session file locally as: {output_filename}") 
 else:
     print(f"Download failed: {file_response.text}")
