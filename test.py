@@ -15,7 +15,7 @@ response = session.post(
 
 # 2. Hit the download route
 file_response = session.get(
-    url='http://127.0.0.1:8000/logs'
+    url='http://127.0.0.1:8000/file'
 )
 
 if file_response.ok:

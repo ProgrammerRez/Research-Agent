@@ -243,28 +243,59 @@ async def get_file(
     app_state_tracker: Optional[str] = Cookie(default=None),
     redis: Redis = Depends(get_redis),
 ) -> StreamingResponse:
-    """Returns the research condcuted as a markdown file
-
-    Args:
-        app_state_tracker (Optional[str], optional): _description_. Defaults to Cookie(default=None).
-        redis (Redis, optional): _description_. Defaults to Depends(get_redis).
-
-    Returns:
-        StreamingResponse: _description_
+    """
+    Extracts the compiled markdown content from the session,
+    sorts by execution timestamp, and returns a downloadable .md file.
     """
 
-    # 1. Fetch the Whole Object
-    whole_object = SessionStore.get_progress(redis, app_state_tracker)
+    # 1. FIX: Await the async database call
+    whole_object = await SessionStore.get_progress(redis, app_state_tracker)
 
-    #2. Check for Null
-    if not whole_object:
+    # 2. Safety verification
+    if not whole_object or "responses" not in whole_object:
         raise HTTPException(status_code=404, detail="No session data found")
-    
-    # 3. Gathering Research Content
-    file_content = whole_object['responses'].items()
 
+    responses = whole_object["responses"]
+    if not responses:
+        raise HTTPException(status_code=404, detail="Session responses are empty")
 
-# 5. /costs returns current sessions costs
+    # 3. Sort timestamps chronologically to handle out-of-order execution history
+    sorted_timestamps = sorted(responses.keys())
+
+    # 4. Extract and combine the raw markdown strings directly
+    markdown_contents = []
+    for timestamp in sorted_timestamps:
+        state_data = responses[timestamp]
+
+        # Pull the exact markdown string from the payload
+        raw_markdown = state_data.get("final_research", "")
+
+        if raw_markdown:
+            # Optional: Add a subtle separator metadata line between multiple historical runs
+            header_prefix = f"\n"
+            markdown_contents.append(header_prefix + raw_markdown)
+
+    if not markdown_contents:
+        raise HTTPException(
+            status_code=404, detail="No markdown text found in session content"
+        )
+
+    # Join multiple runs together with clear separation spacing
+    final_file_output = "\n\n---\n\n".join(markdown_contents)
+
+    # 5. Generate dynamic timestamped filename
+    file_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"research_report_{file_timestamp}.md"
+
+    # 6. Stream encoded byte data to the browser
+    return StreamingResponse(
+        content=io.BytesIO(final_file_output.encode("utf-8")),
+        media_type="text/markdown",
+        headers={
+            "Content-Disposition": f'attachment; filename="{filename}"',
+            "Cache-Control": "no-cache",
+        },
+    )
 
 
 if __name__ == "__main__":
