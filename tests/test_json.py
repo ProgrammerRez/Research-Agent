@@ -9,12 +9,16 @@ client = TestClient(app=app)
 
 
 # 2. Testing JSON Download Function
+@patch("api.api.SessionStore.save_progress", new_callable=AsyncMock)
 @patch("api.api.SessionStore.get_progress", new_callable=AsyncMock)
-def test_json_download_file_success(mock_get, mock_session_payload):
+def test_json_download_file_success(mock_get, mock_save, mock_session_payload):
     """Verifies the raw dictionary state is accurately serialized and streamed."""
 
-    # 1. Getting Mock Payload
+    # Decorators evaluate bottom-up:
+    # 1. @patch("get_progress") runs first -> goes to mock_get
+    # 2. @patch("save_progress") runs second -> goes to mock_save
     mock_get.return_value = mock_session_payload
+    mock_save.return_value = True
 
     # 2. Sending Payload and getting response
     response = client.get("/json", cookies={"app_state_tracker": "session_id_123"})

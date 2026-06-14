@@ -23,7 +23,6 @@ def test_get_file_markdown_assembly(mock_get, mock_session_payload):
     assert "Horizontal and vertical scaling." in file_output
     assert "---" in file_output
 
-
 @patch("api.api.SessionStore.get_progress", new_callable=AsyncMock)
 def test_get_file_empty_markdown(mock_get):
     """Ensures a 404 block is returned if final_research elements are missing."""
