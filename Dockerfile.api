@@ -1,0 +1,24 @@
+FROM python:3.10-slim
+
+WORKDIR /workspace
+
+# Install system dependencies needed for network handling
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy source trees and package folders cleanly
+COPY api/ ./api/
+COPY schema/ ./schema/
+COPY main.py run_api.py ./
+
+EXPOSE 8000
+
+ENV PYTHONUNBUFFERED=1
+
+# Change the execution target to your root-level runner file
+CMD ["python", "run_api.py"]
