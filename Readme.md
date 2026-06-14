@@ -19,7 +19,7 @@ text
              │
              ▼ (State Chart Invocations)
 
-```
+
 
 ┌─────────────────────────────────────────────────────────┐
 │              LangGraph Workflow Engine                  │
