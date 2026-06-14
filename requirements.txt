@@ -13,3 +13,5 @@ pytest
 httpx
 orjson
 redis
+fastapi
+tavily-python

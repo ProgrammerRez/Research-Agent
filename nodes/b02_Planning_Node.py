@@ -25,7 +25,7 @@ load_dotenv()
 
 # --- OPTIMIZATION 3: Global Single Client Instance (Eliminates repeated instantiation costs) ---
 _base_llm = ChatGroq(
-    model=str(os.environ["DEFAULT_MODEL"]),
+    model=str(os.getenv("DEFAULT_MODEL","openai/gpt-oss-20b")),
     max_tokens=int(os.getenv("MAX_TOKENS", 1000)),
     max_retries=int(os.getenv("MAX_RETRIES", 2))
 )

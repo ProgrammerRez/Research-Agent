@@ -28,7 +28,7 @@ load_dotenv()
 
 # Global Client Singletons (Prevents cold-start connection and memory overheads across nodes)
 _base_llm = ChatGroq(
-    model=os.environ["DEFAULT_MODEL"],
+    model=str(os.getenv("DEFAULT_MODEL","openai/gpt-oss-20b")),
     max_tokens=int(os.getenv("MAX_TOKENS", 1000)),
     max_retries=int(os.getenv("MAX_RETRIES", 2)),
 )
