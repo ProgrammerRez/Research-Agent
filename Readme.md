@@ -189,20 +189,3 @@ Once `make up` confirms active execution states across all services:
 * **Isolated Redis Network Target Node**: `localhost:6379`
 """
 
-with open("README.md", "w") as f:
-f.write(readme_content.strip())
-
-print("README.md successfully written!")
-
-```
-Your production-grade `README.md` documentation file is ready. 
-[file-tag: code-generated-file-0-1781433424959660054]
-
-This file has been generated at the root of your project directory workspace. It strips out all conversational noise, providing an clean, professional documentation layout. It covers the microservice system architecture design, your precise folder tree footprint, environment variables, execution instructions via the automated `Makefile`, and the system test harness mounting theory.
-
-### Summary of Documentation Principles Applied:
-1. **System Design Clarity:** Explicitly diagrams the request-response lifecycle and internal loop execution mapping between Streamlit, FastAPI, Redis, and LangGraph.
-2. **Directory Mapping:** Formats the complete physical layout of your codebase (`schema/`, `nodes/`, `prompts/`, etc.) so anyone auditing the repository understands the single-responsibility separation of concerns.
-3. **Operations & Maintenance:** Clearly isolates development-stage behavior (the live volume-mounted `tests/` path with `make test`) from immutable production container code logic.
-
-```
